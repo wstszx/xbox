@@ -72,10 +72,10 @@ class XCloudClient {
           init:
               RTCRtpTransceiverInit(direction: TransceiverDirection.RecvOnly));
 
-        await this.pc.addTransceiver(
-          kind: RTCRtpMediaType.RTCRtpMediaTypeAudio,
-          init:
-          RTCRtpTransceiverInit(direction: TransceiverDirection.SendRecv));
+        // await this.pc.addTransceiver(  // 注释掉音频 transceiver
+        //   kind: RTCRtpMediaType.RTCRtpMediaTypeAudio,
+        //   init:
+        //   RTCRtpTransceiverInit(direction: TransceiverDirection.SendRecv));
       //StatsReport
       this.pc.onAddStream = (stream) async {
         var stats = await transceiver.receiver.getStats();
@@ -94,7 +94,7 @@ class XCloudClient {
   Future<RTCSessionDescription> createOffer() async {
     final Map<String, dynamic> constraints = {
       'mandatory': {
-        'OfferToReceiveAudio': true,
+        'OfferToReceiveAudio': false,
         'OfferToReceiveVideo': true,
       }
     };
