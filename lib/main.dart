@@ -415,7 +415,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             child: Visibility(
               visible: !firstFrameRenderered,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
                     width: 36,
@@ -425,20 +425,6 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                       color: Colors.white70,
                     ),
                   ),
-                  SizedBox(
-                    child: SizedBox(
-                      child: SizedBox(
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(0, 25, 0, 25),
-                          child: Text(hintText,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white70,
-                              )),
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
