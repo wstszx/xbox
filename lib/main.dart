@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   bool firstFrameRenderered = false;
 
   XCloudClient xCloudClient = XCloudClient();
-  late XCloundApi xCloundApi;
+  late XCloudApi xCloudApi; // Corrected class name
   late String userToken;
   late String wlToken;
   late InputChannel inputChannel;
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
       Map<String, dynamic> tokens = json.decode(await file.readAsString());
       if (tokens.containsKey("gssv_token")) {
         var userToken =
-            await XCloundApi.getUserToken(tokens["gssv_token"]["Token"]);
+            await XCloudApi.getUserToken(tokens["gssv_token"]["Token"]);
         var wlToken = tokens["wl_token"]["access_token"];
         if (userToken != null) {
           this.userToken = userToken;
@@ -250,8 +250,8 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
 
   void startStreaming() async {
     try {
-      this.xCloundApi = XCloundApi(this.userToken, this.wlToken);
-      await this.xCloudClient.initialize();
+      this.xCloudApi = XCloudApi(this.userToken, this.wlToken); // Corrected class name for constructor and variable
+      await this.xCloudClient.initialize(this.xCloudApi); // Pass the api instance (using corrected variable name)
       this.xCloudClient.onAddStream = (stream) {
         this.videoRenderer.srcObject = stream;
       };
@@ -283,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         }
       };
 
-      var devices = await this.xCloundApi.getDevices();
+      var devices = await this.xCloudApi.getDevices(); // Corrected variable name
 
       if (devices == null || devices!.length == 0) {
         await showDialog(
@@ -305,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
       } else {
         this.setState(() => this.hintText = "发起会话");
         var sessionState =
-            await this.xCloundApi.startSession(devices[0]["serverId"]);
+            await this.xCloudApi.startSession(devices[0]["serverId"]); // Corrected variable name
         if (sessionState == null || sessionState["state"] != "Provisioned") {
           await showDialog(
               context: context,
@@ -326,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         } else {
           this.setState(() => this.hintText = "第一次握手");
           var offer = await this.xCloudClient.createOffer();
-          var sendSdpResponse = await this.xCloundApi.sendSdp(offer.sdp!);
+          var sendSdpResponse = await this.xCloudApi.sendSdp(offer.sdp!); // Corrected variable name
           if (sendSdpResponse["status"] == "success") {
             this.setState(() => this.hintText = "第二次握手");
             await this.xCloudClient.setRemoteOffer(sendSdpResponse["sdp"]);
@@ -339,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               iceList.add(candidate.toMap());
             }
             var icce = json.encode(iceList);
-            var sendIceResponse = await this.xCloundApi.sendIce(icce);
+            var sendIceResponse = await this.xCloudApi.sendIce(icce); // Corrected variable name
             if (sendIceResponse != null) {
               debugPrint("enter this");
               this.setState(() => this.hintText = "第三次握手");
@@ -371,7 +371,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
 
               Future(() async {
                 while (true) {
-                  this.xCloundApi.KeepAlive();
+                  this.xCloudApi.KeepAlive(); // Corrected variable name
                   await Future.delayed(const Duration(milliseconds: 30000));
                   return this.isConnected;
                 }

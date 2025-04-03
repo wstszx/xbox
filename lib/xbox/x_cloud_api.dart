@@ -2,12 +2,12 @@ import "dart:convert";
 import "package:flutter/foundation.dart";
 import "package:http/http.dart" as http;
 
-class XCloundApi {
+class XCloudApi {
   String token;
   String WlToken;
   late String sessionPath;
 
-  XCloundApi(this.token, this.WlToken);
+  XCloudApi(this.token, this.WlToken);
 
   static getUserToken(String gssvToken) async {
     var uri =
@@ -103,8 +103,8 @@ class XCloundApi {
           "ver": "19041.1.amd64fre.vb_release.191206-1406"
         },
         "displayInfo": {
-          // "dimensions": {"widthInPixels": 1280, "heightInPixels": 720},
-          "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
+          "dimensions": {"widthInPixels": 1280, "heightInPixels": 720}, // Set initial request to 720p
+          // "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
           "pixelDensity": {"dpiX": 1, "dpiY": 1}
         }
       }
