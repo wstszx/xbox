@@ -1,0 +1,19 @@
+# Flutter related
+.dart_tool/
+.flutter_tool_state
+.idea/
+build/
+
+# Executables
+*.exe
+
+# Auth related - WebView2 cache and executables
+auth/user_999/auth-webview.exe.WebView2/
+auth/user_999/auth-webview.exe
+auth/libcrypto-3-x64.dll
+auth/libssl-3-x64.dll
+auth/auth-webview.exe.WebView2/
+auth/auth-webview.exe
+
+# Other
+.metadata
