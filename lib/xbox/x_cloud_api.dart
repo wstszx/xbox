@@ -103,8 +103,8 @@ class XCloudApi {
           "ver": "19041.1.amd64fre.vb_release.191206-1406"
         },
         "displayInfo": {
-          "dimensions": {"widthInPixels": 1280, "heightInPixels": 720}, // Set initial request to 720p
-          // "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
+          // "dimensions": {"widthInPixels": 1280, "heightInPixels": 720}, // Set initial request to 720p
+          "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
           "pixelDensity": {"dpiX": 1, "dpiY": 1}
         }
       }

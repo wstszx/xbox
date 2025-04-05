@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                   ]);
             });
       } else {
-        this.setState(() => this.hintText = "发起会话");
+        this.setState(() => this.hintText = "正在连接到 Xbox...");
         var sessionState =
             await this.xCloudApi.startSession(devices[0]["serverId"]);
         if (sessionState == null || sessionState["state"] != "Provisioned") {
@@ -338,11 +338,11 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                     ]);
               });
         } else {
-          this.setState(() => this.hintText = "第一次握手");
+          this.setState(() => this.hintText = "连接中，请稍候...");
           var offer = await this.xCloudClient.createOffer();
           var sendSdpResponse = await this.xCloudApi.sendSdp(offer.sdp!);
           if (sendSdpResponse["status"] == "success") {
-            this.setState(() => this.hintText = "第二次握手");
+            this.setState(() => this.hintText = "连接中，请稍候...");
             await this.xCloudClient.setRemoteOffer(sendSdpResponse["sdp"]);
             //新增chatsdp问答
             // var sendChatSdpResponse = await this.xCloundApi.sendChatSdp(offer.sdp!);
@@ -356,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             var sendIceResponse = await this.xCloudApi.sendIce(icce);
             if (sendIceResponse != null) {
               debugPrint("enter this");
-              this.setState(() => this.hintText = "第三次握手");
+              this.setState(() => this.hintText = "连接中，请稍候...");
               for (var candidate in sendIceResponse) {
                 debugPrint("enter for loop");
                 if (candidate["candidate"] != "a=end-of-candidates") {
@@ -381,7 +381,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               }
               this.inputChannel =
                   this.xCloudClient.getLocalChannel("input") as InputChannel;
-              this.setState(() => this.hintText = "握手成功");
+              this.setState(() => this.hintText = "连接成功！");
 
               Future(() async {
                 while (true) {
@@ -429,7 +429,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             child: Visibility(
               visible: !firstFrameRenderered,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const SizedBox(
                     width: 36,
@@ -439,6 +439,20 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                       color: Colors.white70,
                     ),
                   ),
+                  SizedBox(
+                    child: SizedBox(
+                      child: SizedBox(
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(0, 25, 0, 25),
+                          child: Text(hintText,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white70,
+                              )),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
