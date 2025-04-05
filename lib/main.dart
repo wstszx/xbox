@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   bool firstFrameRenderered = false;
 
   XCloudClient xCloudClient = XCloudClient();
-  late XCloudApi xCloudApi; // Corrected class name
+  late XCloudApi xCloudApi;
   late String userToken;
   late String wlToken;
   late InputChannel inputChannel;
@@ -264,14 +264,14 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
 
   void startStreaming() async {
     try {
-      this.xCloudApi = XCloudApi(this.userToken, this.wlToken); // Corrected class name for constructor and variable
-      await this.xCloudClient.initialize(); // Pass the api instance (using corrected variable name)
+      this.xCloudApi = XCloudApi(this.userToken, this.wlToken);
+      await this.xCloudClient.initialize();
       this.xCloudClient.onAddStream = (stream) {
         this.videoRenderer.srcObject = stream;
       };
 
       this.xCloudClient.onConnectionState = (state) async {
-        debugPrint("MyHomePage onConnectionState: ${state}");
+        debugPrint("onConnectionState: ${state}");
         if (state == RTCIceConnectionState.RTCIceConnectionStateConnected) {
           isConnected = true;
         } else if (state ==
@@ -297,7 +297,8 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         }
       };
 
-      var devices = await this.xCloudApi.getDevices(); // Corrected variable name
+      var devices = await this.xCloudApi.getDevices();
+
       if (devices == null || devices!.length == 0) {
         await showDialog(
 
@@ -318,7 +319,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
       } else {
         this.setState(() => this.hintText = "发起会话");
         var sessionState =
-            await this.xCloudApi.startSession(devices[0]["serverId"]); // Corrected variable name
+            await this.xCloudApi.startSession(devices[0]["serverId"]);
         if (sessionState == null || sessionState["state"] != "Provisioned") {
           await showDialog(
               context: context,
@@ -339,7 +340,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         } else {
           this.setState(() => this.hintText = "第一次握手");
           var offer = await this.xCloudClient.createOffer();
-          var sendSdpResponse = await this.xCloudApi.sendSdp(offer.sdp!); // Corrected variable name
+          var sendSdpResponse = await this.xCloudApi.sendSdp(offer.sdp!);
           if (sendSdpResponse["status"] == "success") {
             this.setState(() => this.hintText = "第二次握手");
             await this.xCloudClient.setRemoteOffer(sendSdpResponse["sdp"]);
@@ -352,12 +353,12 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               iceList.add(candidate.toMap());
             }
             var icce = json.encode(iceList);
-            var sendIceResponse = await this.xCloudApi.sendIce(icce); // Corrected variable name
+            var sendIceResponse = await this.xCloudApi.sendIce(icce);
             if (sendIceResponse != null) {
-              debugPrint("MyHomePage enter this");
+              debugPrint("enter this");
               this.setState(() => this.hintText = "第三次握手");
               for (var candidate in sendIceResponse) {
-                debugPrint("MyHomePage enter for loop");
+                debugPrint("enter for loop");
                 if (candidate["candidate"] != "a=end-of-candidates") {
                   // await showDialog(
                   //     context: context,
@@ -373,7 +374,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                   //                 child: Text("确认"))
                   //           ]);
                   //     });
-                  debugPrint("MyHomePage addCandidate");
+                  debugPrint("addCandidate");
                   var iceCandidate = RTCIceCandidate(candidate["candidate"], candidate["sdpMid"], candidate["sdpMLineIndex"]!);
                   await this.xCloudClient.pc.addCandidate(iceCandidate);
                 }
@@ -384,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
 
               Future(() async {
                 while (true) {
-                  this.xCloudApi.KeepAlive(); // Corrected variable name
+                  this.xCloudApi.KeepAlive();
                   await Future.delayed(const Duration(milliseconds: 30000));
                   return this.isConnected;
                 }
@@ -394,7 +395,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         }
       }
     } catch (e) {
-      debugPrint("MyHomePage throw: ${e.toString()}");
+      debugPrint("throw: ${e.toString()}");
     }
   }
 
