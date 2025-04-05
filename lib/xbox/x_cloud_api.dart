@@ -37,7 +37,7 @@ class XCloudApi {
     });
 
     if (response.statusCode == 200) {
-      //debugPrint("XCloudApi getDevices() body: ${response.body}");
+      debugPrint("XCloudApi getDevices() body: ${response.body}");
       return json.decode(response.body)["results"];
     }
     return null;
@@ -121,8 +121,8 @@ class XCloudApi {
         body: json.encode(body));
 
     if (response.statusCode == 200 || response.statusCode == 202) {
-      //debugPrint('XCloudApi - startSession() response: 200');
-      //debugPrint("XCloudApi startSession() body: ${response.body}");
+      debugPrint('XCloudApi - startSession() response: 200');
+      debugPrint("XCloudApi startSession() body: ${response.body}");
       var body = json.decode(response.body);
       var provisioningReady = await isProvisioningReady(body["sessionPath"]);
       if (provisioningReady != null) {
@@ -384,7 +384,7 @@ class XCloudApi {
 
       //debugPrint("XCloudApi KeepAlive() Status: ${response.statusCode}");
       if (response.statusCode == 200) {
-        //debugPrint("XCloudApi KeepAlive() body: ${response.body}");
+        debugPrint("XCloudApi KeepAlive() body: ${response.body}");
         return true;
       }
       return false;

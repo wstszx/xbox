@@ -47,19 +47,19 @@ class XCloudClient {
 
       this.pc.onIceConnectionState = (state) {
         if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
-          //debugPrint("XCloudClient peerConnection state: connected");
+          debugPrint("XCloudClient peerConnection state: connected");
           onConnectionState?.call(state);
         } else if (state ==
             RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
-          //debugPrint("XCloudClient peerConnection state: disconnected");
+          debugPrint("XCloudClient peerConnection state: disconnected");
           onConnectionState?.call(state);
         } else if (state ==
             RTCPeerConnectionState.RTCPeerConnectionStateClosed) {
-          //debugPrint("XCloudClient peerConnection state: closed");
+          debugPrint("XCloudClient peerConnection state: closed");
           onConnectionState?.call(state);
         } else if (state ==
             RTCPeerConnectionState.RTCPeerConnectionStateFailed) {
-          //debugPrint("XCloudClient peerConnection state: failed");
+          debugPrint("XCloudClient peerConnection state: failed");
           onConnectionState?.call(state);
         }
       };
@@ -87,7 +87,7 @@ class XCloudClient {
         onAddStream?.call(stream);
       };
     } catch (e) {
-      //debugPrint("XCloudClient initialize() throw: ${e.toString()}");
+      debugPrint("XCloudClient initialize() throw: ${e.toString()}");
     }
   }
 
@@ -140,7 +140,7 @@ class XCloudClient {
         remoteChannels[key] = channel;
       }
     } catch (e) {
-      // debugPrint("XCloudClient createChannels() throw: ${e.toString()}");
+       debugPrint("XCloudClient createChannels() throw: ${e.toString()}");
     }
   }
 
@@ -148,7 +148,7 @@ class XCloudClient {
     this.pc.onIceCandidate = (candidate) {
       if (candidate.candidate != null && candidate.candidate!.isNotEmpty) {
         this.iceCandidates.add(candidate);
-        debugPrint("add ice");
+        debugPrint("XCloudClient add ice");
       }
     };
   }

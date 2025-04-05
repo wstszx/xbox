@@ -17,10 +17,24 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
+  // 定义日志文件
+  final logFile = File('application.log');
+  // 如果日志文件不存在，则创建
+  if (!await logFile.exists()) {
+    await logFile.create();
+  }
+  // 重写 debugPrint 函数，将日志写入文件
+  debugPrint = (String? message, {int? wrapWidth}) async {
+    final logMessage = '[${DateTime.now()}] DEBUG: $message\n';
+    // printToConsole(logMessage, wrapWidth: wrapWidth); // 保留控制台输出
+    await logFile.writeAsString(logMessage, mode: FileMode.append); // 写入文件
+  };
+
+
   if (args.length > 0) {
     var _args = args.join(' ').split('--');
     for (var arg in _args) {
-      //debugPrint(arg);
+      debugPrint(arg);
       var kv = arg.trim().split(' ');
       if (kv[0] == "user") {
         Config.UserIndex = int.parse(kv[1].trim());
@@ -251,13 +265,13 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   void startStreaming() async {
     try {
       this.xCloudApi = XCloudApi(this.userToken, this.wlToken); // Corrected class name for constructor and variable
-      await this.xCloudClient.initialize(this.xCloudApi); // Pass the api instance (using corrected variable name)
+      await this.xCloudClient.initialize(); // Pass the api instance (using corrected variable name)
       this.xCloudClient.onAddStream = (stream) {
         this.videoRenderer.srcObject = stream;
       };
 
       this.xCloudClient.onConnectionState = (state) async {
-        debugPrint("onConnectionState: ${state}");
+        debugPrint("MyHomePage onConnectionState: ${state}");
         if (state == RTCIceConnectionState.RTCIceConnectionStateConnected) {
           isConnected = true;
         } else if (state ==
@@ -284,7 +298,6 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
       };
 
       var devices = await this.xCloudApi.getDevices(); // Corrected variable name
-
       if (devices == null || devices!.length == 0) {
         await showDialog(
 
@@ -341,10 +354,10 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
             var icce = json.encode(iceList);
             var sendIceResponse = await this.xCloudApi.sendIce(icce); // Corrected variable name
             if (sendIceResponse != null) {
-              debugPrint("enter this");
+              debugPrint("MyHomePage enter this");
               this.setState(() => this.hintText = "第三次握手");
               for (var candidate in sendIceResponse) {
-                debugPrint("enter for loop");
+                debugPrint("MyHomePage enter for loop");
                 if (candidate["candidate"] != "a=end-of-candidates") {
                   // await showDialog(
                   //     context: context,
@@ -360,7 +373,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                   //                 child: Text("确认"))
                   //           ]);
                   //     });
-                  debugPrint("addCandidate");
+                  debugPrint("MyHomePage addCandidate");
                   var iceCandidate = RTCIceCandidate(candidate["candidate"], candidate["sdpMid"], candidate["sdpMLineIndex"]!);
                   await this.xCloudClient.pc.addCandidate(iceCandidate);
                 }
@@ -381,7 +394,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         }
       }
     } catch (e) {
-      //debugPrint("throw: ${e.toString()}");
+      debugPrint("MyHomePage throw: ${e.toString()}");
     }
   }
 
