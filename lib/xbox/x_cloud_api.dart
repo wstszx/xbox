@@ -103,8 +103,8 @@ class XCloudApi {
           "ver": "19041.1.amd64fre.vb_release.191206-1406"
         },
         "displayInfo": {
-          // "dimensions": {"widthInPixels": 1280, "heightInPixels": 720}, // Set initial request to 720p
-          "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
+          "dimensions": {"widthInPixels": 1280, "heightInPixels": 720}, // Set initial request to 720p
+          // "dimensions": {"widthInPixels": 800, "heightInPixels": 640},
           "pixelDensity": {"dpiX": 1, "dpiY": 1}
         }
       }
@@ -240,7 +240,8 @@ class XCloudApi {
         },
         body: json.encode(body));
 
-    //debugPrint("XCloudApi sendSdp() Status: ${response.statusCode}");
+    debugPrint("XCloudApi sendSdp() Status: ${response.statusCode}");
+    debugPrint("XCloudApi sendSdp() body: ${response.body}");
     if (response.statusCode == 202) {
       //debugPrint("XCloudApi sendSdp() body: ${response.body}");
       var exchangeReady = await this.isExchangeReady("sdp");
@@ -294,7 +295,8 @@ class XCloudApi {
         },
         body: json.encode(body));
 
-    //debugPrint("XCloudApi sendIce() Status: ${response.statusCode}");
+    debugPrint("XCloudApi sendIce() Status: ${response.statusCode}");
+    debugPrint("XCloudApi sendIce() body: ${response.body}");
     if (response.statusCode == 202) {
       //debugPrint("XCloudApi sendIce() body: ${response.body}");
       var exchangeReady = await this.isExchangeReady("ice");

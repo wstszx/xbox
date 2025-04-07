@@ -104,6 +104,7 @@ class XCloudClient {
   }
 
   Future setRemoteOffer(String sdp) async {
+   debugPrint("XCloudClient setRemoteOffer() sdp: ${sdp}");
    await  this.pc.setRemoteDescription(RTCSessionDescription(sdp, "answer"));
   }
 
